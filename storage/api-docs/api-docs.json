@@ -1,0 +1,732 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SI Manajemen Karyawan API",
+        "description": "Dokumentasi API Sistem Manajemen Karyawan",
+        "contact": {
+            "name": "Support Team",
+            "email": "support@yourdomain.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Base URL (sesuaikan di .env SWAGGER_HOST)"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Registrasi pengguna baru",
+                "operationId": "a718f172ff3ac464d723835815f8fb57",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "employee_id",
+                                    "username",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "role_id"
+                                ],
+                                "properties": {
+                                    "employee_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil membuat pengguna",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully."
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abc..."
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The email field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login menggunakan username dan password",
+                "operationId": "44212a9096e4b09358281e9ec8a0701d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login successful."
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abc..."
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Ambil data profil pengguna yang login",
+                "operationId": "7e3b0ab44699899907dc284c846a4db1",
+                "responses": {
+                    "200": {
+                        "description": "Profil berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Profile retrieved successfully."
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout dan revoke semua token pengguna",
+                "operationId": "79854151e609bd20032aa5aa4d5a35c0",
+                "responses": {
+                    "200": {
+                        "description": "Logout berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout successful."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/employees": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Ambil semua data karyawan dengan opsi pencarian dan filter",
+                "operationId": "2058499f556b4bb9477e07e7a0912c43",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Cari berdasarkan nama lengkap",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Budi"
+                        }
+                    },
+                    {
+                        "name": "position",
+                        "in": "query",
+                        "description": "Filter berdasarkan jabatan/posisi",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Manager"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employees retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Tambah karyawan baru",
+                "operationId": "7683a7b1aec5103190be815e1e30f7da",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email",
+                                    "phone",
+                                    "position",
+                                    "department_id",
+                                    "role_id"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Budi"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Santoso"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "budi@example.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "081234567890"
+                                    },
+                                    "position": {
+                                        "type": "string",
+                                        "example": "Manager"
+                                    },
+                                    "date_of_birth": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-01"
+                                    },
+                                    "date_joined": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-05-01"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Merdeka No.1"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    },
+                                    "department_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil menambah karyawan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee created successfully."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/employees/{id}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Ambil detail karyawan berdasarkan ID",
+                "operationId": "b9d0ecf1079d5097ac5be47f15feb67f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee found."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Karyawan tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Update data karyawan",
+                "operationId": "5cc6df4bd0c5be4084900d70ecc36a25",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Employee"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee updated successfully."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Hapus karyawan (soft delete)",
+                "operationId": "bd97927cf2dedf50b48ebf1a3bfc487e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil dihapus",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Karyawan tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Employee": {
+                "title": "Employee",
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone",
+                    "position",
+                    "department_id",
+                    "role_id"
+                ],
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "example": "Budi"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "Santoso"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "budi@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "081234567890"
+                    },
+                    "position": {
+                        "type": "string",
+                        "example": "Manager"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "1990-01-01"
+                    },
+                    "date_joined": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2023-05-01"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Jl. Merdeka No.1"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "department_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "role_id": {
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Operasi terkait autentikasi pengguna"
+        },
+        {
+            "name": "Employees",
+            "description": "Operasi CRUD untuk data karyawan"
+        }
+    ]
+}
